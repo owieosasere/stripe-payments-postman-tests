@@ -1,0 +1,604 @@
+{
+  "info": {
+    "_postman_id": "387df6be-d928-403b-ac69-2e60fa9570dc",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60143225",
+    "_collection_link": "https://go.postman.co/collection/60143225-387df6be-d928-403b-ac69-2e60fa9570dc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "postman-echo.com/get",
+          "host": [
+            "postman-echo",
+            "com"
+          ],
+          "path": [
+            "get"
+          ]
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "Post data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "postman-echo.com/post",
+          "host": [
+            "postman-echo",
+            "com"
+          ],
+          "path": [
+            "post"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Balance",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Returns a balance object\", function () {\n    pm.expect(pm.response.json().object).to.eql(\"balance\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/balance",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "balance"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set(\"customer_id\", pm.response.json().id);\npm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Customer id starts with cus_\", function () {\n    pm.expect(pm.response.json().id).to.match(/^cus_/);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "name",
+              "value": "Test Customer"
+            },
+            {
+              "key": "email",
+              "value": "test@example.com"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/customers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "customers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create payment intent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set(\"payment_intent_id\", pm.response.json().id);\npm.environment.set(\"payment_intent_id\", pm.response.json().id);\n\npm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Payment succeeded\", function () {\n    pm.expect(pm.response.json().status).to.eql(\"succeeded\");\n});\npm.test(\"Amount is 2000\", function () {\n    pm.expect(pm.response.json().amount).to.eql(2000);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "amount",
+              "value": "2000"
+            },
+            {
+              "key": "currency",
+              "value": "gbp"
+            },
+            {
+              "key": "payment_method",
+              "value": "pm_card_visa"
+            },
+            {
+              "key": "confirm",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[enabled]",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[allow_redirects]",
+              "value": "never"
+            },
+            {
+              "key": "customer",
+              "value": "{{customer_id}}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/payment_intents",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payment_intents"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add test balance",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set(\"payment_intent_id\", pm.response.json().id);\npm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Payment succeeded\", function () {\n    pm.expect(pm.response.json().status).to.eql(\"succeeded\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "amount",
+              "value": "2000"
+            },
+            {
+              "key": "currency",
+              "value": "gbp"
+            },
+            {
+              "key": "payment_method",
+              "value": "pm_card_visa"
+            },
+            {
+              "key": "confirm",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[enabled]",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[allow_redirects]",
+              "value": "never"
+            },
+            {
+              "key": "customer",
+              "value": "{{customer_id}}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/payment_intents",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payment_intents"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Idempotency test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\nvar firstId = pm.response.json().id;\n\npm.sendRequest({\n    url: pm.environment.get(\"base_url\") + \"/payment_intents\",\n    method: \"POST\",\n    header: {\n        \"Authorization\": \"Bearer \" + pm.environment.get(\"secret_key\"),\n        \"Idempotency-Key\": pm.environment.get(\"idem_key\")\n    },\n    body: {\n        mode: \"urlencoded\",\n        urlencoded: [\n            { key: \"amount\", value: \"2000\" },\n            { key: \"currency\", value: \"gbp\" },\n            { key: \"payment_method\", value: \"pm_card_visa\" },\n            { key: \"confirm\", value: \"true\" },\n            { key: \"automatic_payment_methods[enabled]\", value: \"true\" },\n            { key: \"automatic_payment_methods[allow_redirects]\", value: \"never\" }\n        ]\n    }\n}, function (err, res) {\n    pm.test(\"Repeat with same key returns the same payment\", function () {\n        pm.expect(res.json().id).to.eql(firstId);\n    });\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set(\"idem_key\", \"demo-\" + Date.now());"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idem_key}}"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "amount",
+              "value": "2000"
+            },
+            {
+              "key": "currency",
+              "value": "gbp"
+            },
+            {
+              "key": "payment_method",
+              "value": "pm_card_visa"
+            },
+            {
+              "key": "confirm",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[enabled]",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[allow_redirects]",
+              "value": "never"
+            },
+            {
+              "key": "customer",
+              "value": "{{customer_id}}",
+              "disabled": true
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/payment_intents",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payment_intents"
+          ]
+        },
+        "description": "Same key sent twice returns the same payment, so a retry can’t charge the customer twice."
+      },
+      "response": []
+    },
+    {
+      "name": "Decline test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 402\", function () {\n    pm.response.to.have.status(402);\n});\npm.test(\"Card was declined\", function () {\n    pm.expect(pm.response.json().error.code).to.eql(\"card_declined\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "amount",
+              "value": "2000"
+            },
+            {
+              "key": "currency",
+              "value": "gbp"
+            },
+            {
+              "key": "payment_method",
+              "value": "pm_card_chargeDeclined"
+            },
+            {
+              "key": "confirm",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[enabled]",
+              "value": "true"
+            },
+            {
+              "key": "automatic_payment_methods[allow_redirects]",
+              "value": "never"
+            },
+            {
+              "key": "customer",
+              "value": "{{customer_id}}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/payment_intents",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payment_intents"
+          ]
+        },
+        "description": "Tests a declined card using Stripe’s decline test card. Expected: 402 with code `card_declined`. Result: passed"
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve payment intent",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Status is succeeded\", function () {\n    pm.expect(pm.response.json().status).to.eql(\"succeeded\");\n});\npm.test(\"Returns the same payment\", function () {\n    pm.expect(pm.response.json().id).to.eql(pm.environment.get(\"payment_intent_id\"));\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/payment_intents/{{payment_intent_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payment_intents",
+            "{{payment_intent_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Refund payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Refund succeeded\", function () {\n    pm.expect(pm.response.json().status).to.eql(\"succeeded\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "payment_intent",
+              "value": "{{payment_intent_id}}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/refunds",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "refunds"
+          ]
+        },
+        "description": "Sending it again is rejected with `charge_already_refunded`. Result: passed."
+      },
+      "response": []
+    },
+    {
+      "name": "Create payout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{secret_key}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "amount",
+              "value": "1000"
+            },
+            {
+              "key": "currency",
+              "value": "gbp"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/payouts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payouts"
+          ]
+        },
+        "description": "Payout rejected with `400`: the sandbox has no GBP external account, and Stripe’s test bank accounts aren’t accepted for this account."
+      },
+      "response": []
+    }
+  ]
+}
