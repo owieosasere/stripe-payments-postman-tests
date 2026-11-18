@@ -9,7 +9,6 @@
   },
   "item": [
     {
-      "name": "Get data",
       "event": [
         {
           "listen": "test",
